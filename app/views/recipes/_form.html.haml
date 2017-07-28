@@ -1,0 +1,31 @@
+= simple_form_for @recipe, html: {multipart: true} do |f|
+  - if @recipe.errors.any?
+    #errors
+      %p
+        = @recipe.errors.count
+        Prevented this recipe from saving
+      %%ul
+        - @recipe.errors.full_messages.each do |msg|
+          %li= msg
+    .panel-body
+      = f.input :title, input_html: {class: 'form-control'}
+      = f.input :description, input_html: {class: 'form-control'}
+
+      .row
+        .col-md-6
+          %h3 Fixins
+            #fixins
+              =f.simple_fields_for :fixins do |fixin|
+                = render 'fixins_fields', f: fixin
+                .links
+                  = link_to_association 'Add Fixin', f, :fixins, class: "btn btn-default add-button"
+
+              .col-md-6
+                %h3 directions
+                  #directions
+                    = f.simple_fields_for :directions do |direction|
+                      = render 'direction_fields', f: direction
+                      .links
+                        = link_to_association 'Add Fixin', f, :fixins, class: "btn btn-default add-button"
+
+  = f.button :submit, class: "btn btn-primary"
